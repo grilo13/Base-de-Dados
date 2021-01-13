@@ -1,0 +1,627 @@
+RELAÇÕES
+
+membro(Nome, IdMemb, Pais, Cidade, DataNasc)
+
+amigo(IdMemb, IdMemb)
+
+gosta(IdMemb,ISBN)
+
+livro(ISBN,Titulo)
+
+genero(ISBN,Genero)
+
+autoria(ISBN,Coda)
+
+autor(Coda,Nome,Pais)
+
+_______________________________________________________________________________________EXERCICIO 1.__________________________________________________________________________________
+
+
+membro(Nome, IdMemb, Pais, Cidade, DataNasc)
+
+CHAVES CANDIDATAS: {IdMemb}
+
+CHAVES PRIMARIAS: {IdMemb}
+
+CHAVES ESTRANGUEIRA: {}
+
+--------------------------------------------------
+
+amigo(IdMemb, IdMemb)
+
+CHAVES CANDIDATAS: {IdMemb, IdMemb}
+
+CHAVES PRIMARIAS: {IdMemb, IdMemb}
+
+CHAVES ESTRANGEIRAS: {IdMemb} da relação membro
+
+--------------------------------------------------
+
+livro(ISBN,Titulo)
+
+CHAVES CANDIDATAS: {ISBN}
+
+CHAVES PRIMARIAS: {ISBN}
+
+CHAVES ESTRANGEIRAS: {}
+
+--------------------------------------------------
+
+
+gosta(IdMemb,ISBN)
+
+CHAVES CANDIDATAS: {IdMemb,ISBN}
+
+CHAVES PRIMARIAS: {IdMemb,ISBN}
+
+CHAVES ESTRANGEIRAS: {IdMemb} da relação membro
+                     {ISBN} da relação livro
+--------------------------------------------------
+
+
+genero(ISBN,Genero)
+
+CHAVES CANDIDATAS: {ISBN,Genero}
+
+CHAVES PRIMARIAS: {ISBN,Genero}
+
+CHAVES ESTRANGEIRAS: {ISBN} da relação livro
+
+--------------------------------------------------
+
+autor(Coda,Nome,Pais)
+
+CHAVES CANDIDATAS:{Coda}
+
+CHAVES PRIMARIAS:{Coda}
+
+CHAVES ESTRANGEIRAS:{}
+
+
+--------------------------------------------------
+
+
+autoria(ISBN,Coda)
+
+CHAVES CANDIDATAS: {ISBN,Coda}
+
+CHAVES PRIMARIAS: {ISBN,Coda}
+
+CHAVES ESTRANGEIRAS: {ISBN} da relação livro
+                     {Coda} da relação autor
+
+
+--------------------------------------------------
+
+______________________________________________________________________________________EXERCICIO 2._________________________________________________________________________________
+
+Create table membro(
+    Nome varchar(30),
+    IdMemb varchar(10) primary key,
+    PaisM varchar(20),
+    CidadeM varchar(20),
+    DataNasc char(14)
+);
+
+
+Create table amigo1(
+    IdMemb varchar(10),
+    IdMemb2 varchar(10),
+    PRIMARY KEY(IdMemb, IdMemb2),
+    foreign key (IdMemb) references membro on delete restrict
+);
+
+
+Create table livro(
+    ISBN char(3) primary key,
+    Titulo varchar(55)
+);
+
+Create table gosta(
+    IdMemb varchar(10),
+    ISBN char(3),
+    PRIMARY KEY (IdMemb, ISBN),
+    foreign key (IdMemb) references membro on delete restrict,
+    foreign key (ISBN) references livro on delete restrict
+);
+
+
+Create table genero(
+    ISBN char(3),
+    Genero varchar(15),
+    PRIMARY KEY (ISBN, Genero),
+    foreign key (ISBN) references livro on delete restrict
+);
+
+
+Create table autor(
+    CodA  char(3) primary key, 
+    NomeA varchar(30),  
+    PaisA  varchar(20)
+);
+
+
+Create table autoria(
+    ISBN char(3),
+    CodA char(3),
+    primary key (ISBN,CodA),
+    foreign key (ISBN) references livro on  delete restrict,
+    foreign key (CodA) references autor on  delete restrict
+);
+
+
+------------------------------------------
+______________________________________________________________________________________EXERCICIO 3.______________________________________________________________________________
+
+a)
+insert into membro values ('Pedro Grilo', '1990','Portugal','Evora','20000213000000');
+insert into membro values ('Diogo Castanho', '1991','Portugal','Evora','20000727000000');
+insert into membro values ('Jose Gomes', '1450','Portugal','Lisboa','20040802000000');
+insert into membro values ('Mario Barroso', '1230','Portugal','Porto','20020119000000');
+insert into membro values ('Joao Costa', '1320','Portugal','Olhao','20030210000000');
+insert into membro values ('Bernardo Nunes', '1170','Portugal','Lagos','20000915000000');
+insert into membro values ('Rodrigo Vicente', '1810','Portugal','Mora','20001025000000');
+insert into membro values ('Miguel Cardoso', '1055','Portugal','Mora','20010329000000');
+insert into membro values ('Francisco Torres', '1072','Portugal','Redondo','20010227000000');
+insert into membro values ('Tomas Esteves', '0954','Portugal','Reguengos','20020405000000');
+
+insert into membro values ('Joao Felix', '0320','Portugal','Aveiro','20001225000000');
+insert into membro values ('Renato Sanches', '1563','Portugal','Lisboa','19990515000000');
+insert into membro values ('Rui Patricio', '0532','Portugal','Leiria','19850213000000');
+insert into membro values ('Cristiano Ronaldo', '0707','Portugal','Madeira','19830912000000');
+insert into membro values ('Ruben Dias', '1254','Portugal','Guarda','19940312000000');
+insert into membro values ('Joao Ribeiro', '0140','Portugal','Portimao','19920205000000');
+insert into membro values ('Joao Moutinho', '1519','Espanha','Madrid','19860819000000');
+insert into membro values ('Goncalo Ramos', '1820','Espanha','Barcelona','20001101000000');
+insert into membro values ('Andre Almeida', '0820','Portugal','Lisboa','19900615000000');
+insert into membro values ('Bruno Fernandes', '1783','Portugal','Beja','19920721000000');
+
+insert into membro values ('Leitor', 'oleitor','Portugal','Beja','19900215000000');
+insert into membro values ('Detetive', 'odetetive','Portugal','Evora','19920715000000');
+
+
+
+
+b)
+
+insert into livro values ('145','O Segredo de Lincoln');
+insert into livro values ('178','O Caminho da Trovoada');
+insert into livro values ('250','Uma Historia de Arrepiar');
+insert into livro values ('200','A Pedra Filosofal');
+insert into livro values ('095','A Guerra do Infinito');
+
+insert into livro values ('121','Crime no Expresso do Oriente');
+
+insert into livro values ('321','Uma Historia de Amor');
+insert into livro values ('103','O Improvavel Aconteceu');
+insert into livro values ('301','Escandalos');
+insert into livro values ('205','O Rei');
+insert into livro values ('356','Destinos Cruzados');
+
+insert into autor values ('a15','Joao Vasconcelos', 'Portugal');
+insert into autor values ('a25','Jose Peixoto', 'Portugal');
+insert into autor values ('a18','Francisco José Viegas', 'Portugal');
+insert into autor values ('a30','Joana Cruz', 'Portugal');
+insert into autor values ('a35','Sofia Meireles', 'Portugal');
+insert into autor values ('a10','Agatha Christie', 'Inglaterra'); 
+                          
+
+
+
+c)
+insert into amigo1 values ('1990', '1991');
+insert into amigo1 values ('1990', '1810');
+insert into amigo1 values ('1990', '0320');
+
+insert into amigo1 values ('1170', '1990');
+insert into amigo1 values ('1170', '0320');
+insert into amigo1 values ('1170', '0532');
+insert into amigo1 values ('1170', 'oleitor');
+
+insert into amigo1 values ('1783', '1450');
+insert into amigo1 values ('1783', '0954');
+insert into amigo1 values ('1783', '0707');
+
+insert into amigo1 values('oleitor', '1990');
+insert into amigo1 values('oleitor', '1450');
+insert into amigo1 values('oleitor', '1320');
+
+insert into amigo1 values ('0707', '1990');
+insert into amigo1 values ('0707', '1991');
+insert into amigo1 values ('0707', '1450');
+insert into amigo1 values ('0707', '1230');
+insert into amigo1 values ('0707', '1320');
+insert into amigo1 values ('0707', '1170');
+insert into amigo1 values ('0707', '1810');
+insert into amigo1 values ('0707', '1055');
+insert into amigo1 values ('0707', '1072');
+insert into amigo1 values ('0707', '0954');
+insert into amigo1 values ('0707', '0320');
+insert into amigo1 values ('0707', '1563');
+insert into amigo1 values ('0707', '0532');
+insert into amigo1 values ('0707', '1254');
+insert into amigo1 values ('0707', '0140');
+insert into amigo1 values ('0707', '1519');
+insert into amigo1 values ('0707', '1820');
+insert into amigo1 values ('0707', '0820');
+insert into amigo1 values ('0707', '1783');
+insert into amigo1 values ('0707', 'oleitor');
+insert into amigo1 values ('0954', 'oleitor');
+
+
+
+
+d)
+insert into gosta values ('1990','145');
+insert into gosta values ('1990','200');
+insert into gosta values ('1990','205');
+
+insert into gosta values ('1991','321');
+insert into gosta values ('1991','095');
+
+
+insert into gosta values ('1450','095');
+insert into gosta values ('1450','301');
+
+insert into gosta values ('1230','356');
+insert into gosta values ('1230','121');
+
+insert into gosta values ('1320','301');
+insert into gosta values ('1170','321');
+insert into gosta values ('1810','095');
+insert into gosta values ('1055','178');
+insert into gosta values ('1072','321');
+insert into gosta values ('0954','250');
+
+insert into gosta values ('0320','145');
+insert into gosta values ('1563','250');
+insert into gosta values ('0532','356');
+insert into gosta values ('0707','103');
+insert into gosta values ('1254','095');
+insert into gosta values ('0140','301');
+insert into gosta values ('1519','205');
+insert into gosta values ('1820','095');
+insert into gosta values ('0820','103');
+
+insert into gosta values ('1783','178');
+insert into gosta values ('1783','121');
+
+
+
+e)  Valores acrescentados acima para que as perguntas tenham solução.
+
+
+
+__________________________________________________________________________________EXERCICIO 4.__________________________________________________________________________________
+
+
+
+
+a) SQL:
+
+   select NomeA
+   from autor, autoria, genero
+   where Genero = 'Drama' and genero.ISBN = autoria.ISBN and autoria.CodA = autor.CodA
+
+
+
+   ALGEBRA RELACIONAL:
+
+
+   πNomeA( σGenero='Drama'(autor ⟗ autoria ⟗ genero))
+
+
+
+b) SQL:
+
+   select Nome
+   from membro, gosta, autor, autoria
+   where NomeA = 'Agatha Christie' and membro.IdMemb = gosta.IdMemb and gosta.ISBN = autoria.ISBN and autoria.CodA = autor.CodA
+
+
+
+   ALGEBRA RELACIONAL:
+
+
+   πNome( σNomeA='Agatha Christie' (membro ⟗ gosta ⟗ autor ⟗ autoria))
+
+
+
+
+c) SQL:
+
+
+   select Distinct Nome 
+   from membro, autor, gosta, autoria 
+   where membro.PaisM = autor.PaisA and membro.IdMemb = gosta.IdMemb and gosta.ISBN = autoria.ISBN and autoria.CodA = autor.CodA
+
+
+
+  ALGEBRA RELACIONAL:
+
+
+  πNome( σmembro.PaisM = autor.PaisA(membro ⟗ gosta ⟗ autor ⟗ autoria))
+
+
+
+
+d) SQL:
+
+
+   select Nome 
+   from membro, autor, autoria, gosta
+   Except   
+   select Nome 
+   from membro, autor, autoria, gosta 
+   where NomeA = 'Agatha Christie' and membro.IdMemb = gosta.IdMemb and gosta.ISBN = autoria.ISBN and autoria.CodA = autor.CodA
+
+
+
+   ALGEBRA RELACIONAL:
+
+
+   πNome(membro ⟗ gosta ⟗ autor ⟗ autoria) - πNome( σNomeA = 'Agatha Christie' (membro ⟗ gosta ⟗ autor ⟗ autoria))
+
+
+
+e) SQL:
+
+
+   select IdMemb,Nome
+   from membro
+
+   except
+
+  (select IdMemb2,Nome
+   from membro natural inner join amigo1
+   where IdMemb='oleitor' 
+
+   union
+ 
+   select IdMemb,Nome
+   from membro natural inner join amigo1
+   where IdMemb2='oleitor' )
+
+
+
+   ALGEBRA RELACIONAL:
+
+
+   πIdMemb,Nome(membro) - ( (πIdMemb2,Nome( σIdMemb = 'oleitor' (membro ⟗ amigo1))) + (πIdMemb,Nome( σIdMemb2 = 'oleitor' (membro ⟗ amigo1)))
+
+
+
+f) SQL:
+
+
+   	select membro.nome
+	from membro, amigo1
+	where amigo1.IdMemb2='oleitor' and membro.IdMemb = amigo1.IdMemb
+	except
+	select membro.nome
+	from membro
+	where membro.DataNasc > '19900215000000'
+
+
+
+   ALGEBRA RELACIONAL:
+
+
+   πmembro.Nome(σmigo1.IdMemb2='oleitor'(membro ⟗ amigo1))  -  πmembro.Nome(σmembro.DataNasc > '19900215000000'(membro))
+
+
+
+g) SQL:
+
+
+   select Nome
+   from membro, gosta, autor, autoria
+   where NomeA = 'Agatha Christie' and membro.IdMemb = gosta.IdMemb and gosta.ISBN = autoria.ISBN and autoria.CodA = autor.CodA
+   intersect
+   select Nome
+   from membro, gosta, autor, autoria
+   where NomeA = 'Francisco José Viegas' and membro.IdMemb = gosta.IdMemb and gosta.ISBN = autoria.ISBN and autoria.CodA = autor.CodA
+
+
+
+   ALGEBRA RELACIONAL:
+
+
+   πNome(σNomeA = 'Agatha Christie'(membro ⟗ gosta ⟗ autor ⟗ autoria)) * πNome(σNomeA = 'Francisco José Viegas'(membro ⟗ gosta ⟗ autor ⟗ autoria))
+ 
+
+
+h) SQL:
+
+
+   select Nome
+   from membro, gosta, autor, autoria
+   where NomeA = 'Agatha Christie' and membro.IdMemb = gosta.IdMemb and gosta.ISBN = autoria.ISBN and autoria.CodA = autor.CodA
+   union
+   select Nome
+   from membro, gosta, autor, autoria
+   where NomeA = 'Francisco José Viegas' and membro.IdMemb = gosta.IdMemb and gosta.ISBN = autoria.ISBN and autoria.CodA = autor.CodA
+
+
+
+   ALGEBRA RELACIONAL:
+
+
+   πNome(σNomeA = 'Agatha Christie'(membro ⟗ gosta ⟗ autor ⟗ autoria)) + πNome(σNomeA = 'Francisco José Viegas'(membro ⟗ gosta ⟗ autor ⟗ autoria))
+
+
+
+
+i) SQL:
+
+
+   select count (*)
+   from ( select nome 
+          from amigo natural inner join membro 
+          where IdMemb like 'oleitor') as NumberOfFriends 
+
+
+
+  ALGEBRA RELACIONAL:
+
+
+  nome Gcount(*) as NumberOfFriends(σIdMemb = 'oleitor'(amigo ⟗ membro))
+
+
+
+
+j) SQL:
+
+
+   WITH x as (select membro.Nome, count(amigo1.IdMemb) as n_amigos 
+              from membro,amigo1
+              where membro.IdMemb = amigo1.IdMemb group by Nome)
+   select
+    nome,n_amigos
+   from x
+   where n_amigos=(SELECT max(n_amigos) FROM x)
+
+
+   
+   ALGEBRA RELACIONAL: ****
+
+
+   X <-- (πmembro.Nome(Gcount (amigo1.IdMemb) as n_amigos
+           
+          σmembro.IdMemb = amigo1.IdMemb
+
+     Nome, n_amigos(σGmax(n_amigos)(X))
+
+
+l) SQL:
+
+
+   select ISBN, count(distinct genero)
+   from genero
+   group by ISBN
+
+
+   ALGEBRA RELACIONAL:
+
+
+   ISBN G count( distinct genero) (genero)
+   
+
+
+
+m) SQL:
+
+
+   WITH X as (select ISBN, count(distinct genero) as NGeneros
+              from genero           
+              group by ISBN), 
+           
+
+   Y as (select ISBN, count(distinct IdMemb) as NGostos       
+         from membro natural inner join gosta       
+         group by ISBN)  
+          
+
+   select ISBN, NGeneros, NGostos from x natural join y
+
+
+
+
+  ALGEBRA RELACIONAL:
+         
+    X <-- (ISBN, Gcount(distinct genero) as n_Generos (genero)
+      
+    Y <-- (ISBN, Gcount(distinct IdMemb) as nGostos (membro ⟗ gosta)
+         
+    πISBN, NGeneros, Ngostos(X ⟗ Y)    
+    
+
+
+
+n) SQL:
+
+
+  WITH X as (select nomeA, count(distinct ISBN) as NLivros
+              from autor natural inner join livro natural inner join autoria
+              group by nomeA),
+
+   Y as (select nomeA, count(distinct genero) as NGeneros
+         from autor natural inner join genero natural inner join autoria
+         group by nomeA), 
+
+   Z as (select nomeA, count( IdMemb) as NGostos
+         from autor natural inner join gosta natural inner join autoria
+         group by nomeA)
+
+
+   select nomeA, NLivros, NGeneros, NGostos 
+   from x natural join y natural join z
+
+
+
+  ALGEBRA RELACIONAL:
+
+
+   X <-- (NomeA, Gcount(distinct ISBN) as NLivros (autor ⟗ livro ⟗ autoria)
+
+   Y <-- (NomeA, Gcount(distinct genero) as NGeneros (autor ⟗ genero ⟗ autoria)
+
+   Z <-- (NomeA, Gcount(distinct IdMemb) as NGostos (autor ⟗ gosta ⟗ autoria)
+
+   πnomeA, NLivros, NGeneros, Ngostos(X ⟗ Y ⟗ Z)
+
+
+
+         
+         
+o) SQL:
+
+
+  WITH X as (select nome, count(distinct IdMemb2) as NAmigos
+              from amigo1 natural inner join membro
+              group by nome)
+ 
+   Y as (select nome, count(distinct ISBN) as NGostos
+         from membro natural inner join gosta
+         group by nome)
+
+
+   select nome, NAmigos, NGostos 
+   from x natural join y
+
+
+
+
+   ALGEBRA RELACIONAL:
+
+   
+   X <-- (Nome, Gcount(distinct IdMemb2) as NAmigos (amigo1 ⟗ membro)
+
+   Y <-- (Nome, Gcount(distinct ISBN) as NGostos (membro ⟗ gosta)
+
+   πNome, NAmigos, NGostos(X ⟗ Y)
+
+
+
+   
+
+p) SQL:
+
+
+    select t.Nome 
+    from membro as T
+    where not exists(select amigo1.IdMemb
+                     from amigo1
+                     except
+                     select amigo1.IdMemb
+                     from membro natural inner join amigo1
+                     where T.IdMemb=amigo1.IdMemb);
+
+
+   ALGEBRA RELACIONAL:
+
+
+   πT.Nome(σnot exists((πamigo1.IdMemb (amigo1))-(πamigo1.IdMemb(σT.IdMemb=amigo1.IdMemb(membro⟗amigo1)) (membro as T))
+
+q)
+   
