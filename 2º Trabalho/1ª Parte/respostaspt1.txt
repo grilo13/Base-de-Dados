@@ -1,0 +1,739 @@
+___________________________________________________________RESPOSTAS AOS EXERCICIOS PROPOSTOS_________________________________________________________________________________________
+
+
+1) Imagem do diagrama no relatório em pdf.
+
+
+
+2) Relações: 
+1.Membros(username, nome, data_nasc, país, cidade)
+2.Receita(id_receita, Nome, Descrição, Custo, Tempo_Confeção)
+3.Lista_Ingredientes(Nome_Ing, Id_Receita)
+4.Fotografias(UrlFoto, Id_Receita)
+5.Gostos(Username, IdReceita, Valor)
+6.Prato Principal(Id_Receita, Porções) 
+7.Sobremesa(Id_Receita, Facilidade)   
+8.Receitas_Contêm(Id_Receita, Username)
+9.Amigos1(Username, Username2)  
+10.Têm(Membros têm)(Username, Id_Receita)  
+11.Receita-> Têm (Id_Receita, UrlFoto) 
+12.Contêm(Id_Receita, Quantidade,Unidade, Nome_Ing) 
+13.Podem_Colocar(Username, Valor)
+
+
+
+
+
+3)  COMANDOS SQL PARA A CRIAÇÃO DAS TABELAS QUE CONSTITUEM ESTA BASE DE DADOS:
+
+
+
+  	Create table membro(
+   	 Nome varchar(30),
+   	 username varchar(15) primary key,
+    	 PaisM varchar(20),
+   	 CidadeM varchar(20),
+    	 DataNasc char(14)
+  	);
+
+
+
+  	Create table receita(
+    	 NomeR varchar(50),
+   	 IdReceita char(3) primary key,
+   	 Descrição varchar(200),
+   	 Tipo varchar(15),
+    	 N_Porcoes char(1),
+    	 Facilidade varchar(10),
+   	 TempoDeConfecao varchar(10),
+   	 Custo char(3),
+         Nível varchar(15)
+  	);
+
+
+  
+   	Create table fotografias(
+    	 IdReceita char(3),
+    	 UrlFoto varchar(30),
+   	 primary key(IdReceita, UrlFoto),
+   	 foreign key (IdReceita) references receita on delete restrict
+  	);
+
+
+
+   	Create table lista_ingredientes(
+    	 IdReceita char(3),
+    	 NomeIngrediente varchar(40),
+    	 Primary Key(IdReceita,NomeIngrediente),
+    	 foreign key (IdReceita) references receita on delete restrict
+   	);
+
+
+
+    	Create table faz_receita(
+    	 username varchar(15),
+   	 IdReceita char(3),
+   	 PRIMARY KEY(username, IdReceita),
+   	 foreign key (username) references membro on delete restrict,
+   	 foreign key (IdReceita) references receita on delete restrict
+   	);
+
+
+
+   	Create table amigos1(
+    	 username1 varchar(15),
+    	 username2 varchar(15),
+   	 PRIMARY KEY(username1, username2)
+   	);
+
+
+    
+   	Create table gostos(
+    	 username varchar(15),
+    	 IdReceita char(3),
+   	 Valor integer,
+   	 PRIMARY KEY(username, IdReceita),
+   	 foreign key (username) references membro on delete restrict,
+   	 foreign key (IdReceita) references receita on delete restrict
+   	);
+   
+
+
+4) POVOAMENTO DA BASE DE DADOS:
+
+
+
+	insert into membro values ('Pedro Grilo', 'pedrocas','Portugal','Evora','20000213000000');
+	insert into membro values ('Diogo Castanho', 'diogo66','Portugal','Evora','20000727000000');
+	insert into membro values ('Jose Gomes', 'jose999','Portugal','Lisboa','20040802000000');
+	insert into membro values ('Mario Barroso', 'mario222','Portugal','Porto','20020119000000');
+	insert into membro values ('Joao Costa', 'joao843','Portugal','Olhao','20030210000000');
+	insert into membro values ('Bernardo Nunes', 'benny55','Portugal','Lagos','20000915000000');
+	insert into membro values ('Rodrigo Vicente', 'rodrivice5','Portugal','Mora','20001025000000');
+	insert into membro values ('Miguel Cardoso', 'migascar3','Portugal','Mora','20010329000000');
+	insert into membro values ('Francisco Torres', 'torres14v','Portugal','Redondo','20010227000000');
+	insert into membro values ('Tomas Esteves', 'tonecas44','Portugal','Reguengos','20020405000000');
+	insert into membro values ('Joao Felix', 'felix7','Portugal','Aveiro','20001225000000');
+	insert into membro values ('Renato Sanches', 'renatinho33','Portugal','Lisboa','19990515000000');
+	insert into membro values ('Rui Patricio', 'ruipatrocks55','Portugal','Leiria','19850213000000');
+	insert into membro values ('Cristiano Ronaldo', 'cristianor7','Portugal','Madeira','19830912000000');
+
+	
+
+
+
+
+	insert into receita values ('Pudim de chocolate e amêndoa','123','Sobremesa caseira som sabor de chocolate e pedaços crocantes de amêndoa','Sobremesa','-','fácil','Rápido','$','n.médio = 1');
+	insert into receita values ('Mousse de Nutella e amêndoa','124','Sobremesa doce com leve sabor de nuttela e pedaços crocantes de amêndoa','Sobremesa', '-','médio','Rápido','$','n.médio = 3');
+	insert into receita values ('Torta Oreo','125','Sobremesa ideal para quem gosta da famosa bolacha Oreo','Sobremesa','-','fácil','Rápido','$','n.médio = 1');
+	insert into receita values ('Mousse de chocolate','126','A mousse mais famosa alguma vez existente. Feita com o melhor chocolate suiço','Sobremesa','-','difícil','Rápido','$','n.médio = 2.6');
+	insert into receita values ('Cheesecake de framboesa e amêndoa','127','Cheesecake simples com a famosa fruta vermelha framboesa e pedaços crocantes de amêndoa','Sobremesa','-','médio','Médio','$','n.médio = 3');
+	insert into receita values ('Bolinhas de Carne','128','Bolinhas salgadas com recheio de carne, ideal para um bom petisco de entrada','Entrada','-','-','Rápido','$','n.médio = 1.5');
+	insert into receita values ('Empadas de Pato','129','Empadas de pato ideais para uma entrada','Entrada','-','-','Médio','$$','n.médio = 1.5');
+	insert into receita values ('Rissóis de Atum com Tomate','130','Rissóis de Atum com um leve sabor a tomate','Entrada','-','-','Rápido','$$','n.médio = 2');
+	insert into receita values ('Rissóis de Pescada','131','Rissóis de pescada para uma entrada mais leve','Entrada','-','-','Médio','$$','n.médio = 1');
+	insert into receita values ('Croquetes de Frango','132','Os famosos croquetes de frango de que toda a gente fala! Com um leve sabor a tomate','Entrada','-','-','Rápido','$','n.médio = 1.25');
+	insert into receita values ('Folhado de Camarão','133','Folhado de camarão ideal para uma boa entrada','Entrada','-','-','Rápido','$$','n.médio = 1.75');
+	insert into receita values ('Rolinhos de Salsicha Panados','134','Rolinhos de massa folhada enrolados sobre uma boa salsicha alemã','Entrada','-','-','Rápido','$$','n.médio = 2');
+	insert into receita values ('Bacalhau com Natas','135','Haverá algo mais Português que um belo bacalhau com natas?','Prato Principal','2','-','Médio','$$','n.médio = 2');
+	insert into receita values ('Pizza margarita','136','Pizza com tomate, queijo, fiambre e pedaços de ovo cozido','Prato Principal','4','-','Longo','$$$','n.médio = 3');
+	insert into receita values ('Entrecosto grelhado','137','Entrecosto grelhado com leve aroma de massa de pimentão','Prato Principal','6','-','Longo','$$','n.médio = 2');
+	insert into receita values ('Bitoque de Perú','138','Bitoque de perú, a refeição ideal para quem está indeciso com a ementa!','Prato Principal','4','-','Longo','$$','n.médio = 1.5');
+	insert into receita values ('Arroz de Pato','139','O famoso arroz de pato para uma boa ocasião em família','Prato Principal','6','-','Médio','$$$','n.médio = 3');
+	insert into receita values ('Carne à alentejana','140','Carne de porco com batata assada e amêijoa fresquinha','Prato Principal','4','-','Longo','$$$','n.médio = 1');
+	insert into receita values ('Choco frito','141','Choco de Setúbal com batata cozida','Prato Principal','2','-','Longo','$$','n.médio = 2'); 
+	insert into receita values ('Quiche de pato e cogumelos','142','Quiche de pato e cogumelos, uma refeição mais leve para quem não tenha tanta fome','Prato Principal','4','-','Longo','$$','n.médio = 3');
+	insert into receita values ('Lasanha de espinafres','143','Lasanha de espinafres aconselhada a vegetarianos','Prato Principal','6','-','Médio','$$','n.médio = 2.5');
+	insert into receita values ('Esparguete à Bolonhesa','144','Esparguete com a melhor combinação de carne picada e tomate','Prato Principal','6','-','Médio','$$','n.médio = 2');
+
+
+
+
+
+
+
+	insert into fotografias values ('123','imagem_culinaria8.url');
+	insert into fotografias values ('124','imagem_culinaria9.url');
+	insert into fotografias values ('125','imagem_culinaria10.url');
+	insert into fotografias values ('126','imagem_culinaria11.url');
+	insert into fotografias values ('127','imagem_culinaria.url');
+	insert into fotografias values ('127','imagem_culinaria1.url');
+	insert into fotografias values ('127','imagem_culinaria2.url');
+	insert into fotografias values ('127','imagem_culinaria3.url');
+	insert into fotografias values ('128','imagem_culinaria12.url');
+	insert into fotografias values ('129','imagem_culinaria13.url');
+	insert into fotografias values ('130','imagem_culinaria14.url');
+	insert into fotografias values ('131','imagem_culinaria15.url');
+	insert into fotografias values ('132','imagem_culinaria16.url');
+	insert into fotografias values ('133','imagem_culinaria17.url');
+	insert into fotografias values ('134','imagem_culinaria18.url');
+	insert into fotografias values ('135','imagem_culinaria19.urll');
+	insert into fotografias values ('136','imagem_culinaria20.url');
+	insert into fotografias values ('137','imagem_culinaria21.url');
+	insert into fotografias values ('138','imagem_culinaria22.url');
+	insert into fotografias values ('139','imagem_culinaria23.url');
+	insert into fotografias values ('140','imagem_culinaria24.url');
+	insert into fotografias values ('141','imagem_culinaria25.url');
+	insert into fotografias values ('142','imagem_culinaria26.url');
+	insert into fotografias values ('143','imagem_culinaria27.url');
+	insert into fotografias values ('144','imagem_culinaria28.url');
+
+
+
+
+
+
+
+	insert into lista_ingredientes values ('123','Chocolate');
+	insert into lista_ingredientes values ('123','Açucar');
+	insert into lista_ingredientes values ('123','Ovos');
+	insert into lista_ingredientes values ('123','Leite');
+	insert into lista_ingredientes values ('123','Amêndoa');
+	insert into lista_ingredientes values ('124','Nutella');
+	insert into lista_ingredientes values ('124','Leite');
+	insert into lista_ingredientes values ('124','Ovos');
+	insert into lista_ingredientes values ('124','Amêndoa');
+	insert into lista_ingredientes values ('125','Oreo');
+	insert into lista_ingredientes values ('125','Farinha');
+	insert into lista_ingredientes values ('125','Açucar');
+	insert into lista_ingredientes values ('125','Ovos');
+	insert into lista_ingredientes values ('125','Leite');
+	insert into lista_ingredientes values ('125','Fermento em pó');
+	insert into lista_ingredientes values ('126','Chocolate');
+	insert into lista_ingredientes values ('126','Leite');
+	insert into lista_ingredientes values ('126','Ovos');
+	insert into lista_ingredientes values ('126','Açucar');
+	insert into lista_ingredientes values ('126','Cogumelos');
+	insert into lista_ingredientes values ('127','Farinha');
+	insert into lista_ingredientes values ('127','Ovos');
+	insert into lista_ingredientes values ('127','Leite');
+	insert into lista_ingredientes values ('127','Açucar');
+	insert into lista_ingredientes values ('127','Framboesas');
+	insert into lista_ingredientes values ('127','Amêndoa');
+	insert into lista_ingredientes values ('128','Perú');
+	insert into lista_ingredientes values ('128','Farinha');
+	insert into lista_ingredientes values ('129','Farinha');
+	insert into lista_ingredientes values ('129','Massa Folhada');
+	insert into lista_ingredientes values ('130','Farinha');
+	insert into lista_ingredientes values ('130','Atum');
+	insert into lista_ingredientes values ('130','Tomate');
+	insert into lista_ingredientes values ('130','Salsa');
+	insert into lista_ingredientes values ('130','Cogumelos');
+	insert into lista_ingredientes values ('131','Pescadas');
+	insert into lista_ingredientes values ('131','Farinha');
+	insert into lista_ingredientes values ('131','Coentros');
+	insert into lista_ingredientes values ('132','Frango');
+	insert into lista_ingredientes values ('132','Farinha');
+	insert into lista_ingredientes values ('132','Tomate');
+	insert into lista_ingredientes values ('133','Farinha');
+	insert into lista_ingredientes values ('133','Camarão');
+	insert into lista_ingredientes values ('133','Tomate');
+	insert into lista_ingredientes values ('133','Salsa');
+	insert into lista_ingredientes values ('133','Massa Folhada');
+	insert into lista_ingredientes values ('134','Salsicha');
+	insert into lista_ingredientes values ('134','Massa Folhada');
+	insert into lista_ingredientes values ('134','Manteiga');
+	insert into lista_ingredientes values ('134','Sal');
+	insert into lista_ingredientes values ('135','Bacalhau');
+	insert into lista_ingredientes values ('135','Natas');
+	insert into lista_ingredientes values ('135','Sal');
+	insert into lista_ingredientes values ('135','Cebola');
+	insert into lista_ingredientes values ('135','Azeite');
+	insert into lista_ingredientes values ('136','Farinha');
+	insert into lista_ingredientes values ('136','Azeite');
+	insert into lista_ingredientes values ('136','Sal');
+	insert into lista_ingredientes values ('136','Tomate');
+	insert into lista_ingredientes values ('136','Queijo');
+	insert into lista_ingredientes values ('136','Fiambre');
+	insert into lista_ingredientes values ('136','Ovos');
+	insert into lista_ingredientes values ('137','Entrecosto');
+	insert into lista_ingredientes values ('137','Sal');
+	insert into lista_ingredientes values ('137','Tomate');
+	insert into lista_ingredientes values ('138','Ovos');
+	insert into lista_ingredientes values ('138','Arroz');
+	insert into lista_ingredientes values ('138','Peru');
+	insert into lista_ingredientes values ('138','Alface');
+	insert into lista_ingredientes values ('138','Tomate');
+	insert into lista_ingredientes values ('138','Batata');
+	insert into lista_ingredientes values ('139','Arroz');
+	insert into lista_ingredientes values ('139','Sal');
+	insert into lista_ingredientes values ('139','Pato');
+	insert into lista_ingredientes values ('139','Ovos');
+	insert into lista_ingredientes values ('140','Porco');
+	insert into lista_ingredientes values ('140','Sal');
+	insert into lista_ingredientes values ('140','Amêijoas');
+	insert into lista_ingredientes values ('140','Batata');
+	insert into lista_ingredientes values ('141','Choco'); 
+	insert into lista_ingredientes values ('141','Farinha'); 
+	insert into lista_ingredientes values ('141','Óleo'); 
+	insert into lista_ingredientes values ('141','Sal'); 
+	insert into lista_ingredientes values ('141','Batata'); 
+	insert into lista_ingredientes values ('142','Pato');
+	insert into lista_ingredientes values ('142','Ovos');
+	insert into lista_ingredientes values ('142','Massa Folhada');
+	insert into lista_ingredientes values ('142','Cogumelos');
+	insert into lista_ingredientes values ('143','Massa Folhada');
+	insert into lista_ingredientes values ('143','Espinafres');
+	insert into lista_ingredientes values ('143','Molho Bechamel');
+	insert into lista_ingredientes values ('143','Sal');
+	insert into lista_ingredientes values ('144','Esparguete');
+	insert into lista_ingredientes values ('144','Carne Picada');
+	insert into lista_ingredientes values ('144','Tomate');
+	insert into lista_ingredientes values ('144','Sal');
+	insert into lista_ingredientes values ('144','Salsa');
+
+
+
+
+
+
+	insert into faz_receita values ('pedrocas','123');
+	insert into faz_receita values ('pedrocas','132');
+	insert into faz_receita values ('pedrocas','144');
+	insert into faz_receita values ('diogo66','143');
+	insert into faz_receita values ('diogo66','124');
+	insert into faz_receita values ('jose999','125');
+	insert into faz_receita values ('jose999','131');
+	insert into faz_receita values ('mario222','126');
+	insert into faz_receita values ('mario222','127');
+	insert into faz_receita values ('mario222','128');
+	insert into faz_receita values ('mario222','129');
+	insert into faz_receita values ('joao843','133');
+	insert into faz_receita values ('joao843','130');
+	insert into faz_receita values ('benny55','135');
+	insert into faz_receita values ('benny55','134');
+	insert into faz_receita values ('benny55','137');
+	insert into faz_receita values ('rodrivice5','136');
+	insert into faz_receita values ('rodrivice5','140');
+	insert into faz_receita values ('migascar3','142');
+	insert into faz_receita values ('migascar3','141');
+	insert into faz_receita values ('torres14v','124');
+	insert into faz_receita values ('torres14v','138');
+	insert into faz_receita values ('torres14v','139');
+	insert into faz_receita values ('torres14v','140');
+	insert into faz_receita values ('tonecas44','144');
+	insert into faz_receita values ('tonecas44','125');
+	insert into faz_receita values ('felix7','126');
+	insert into faz_receita values ('felix7','127');
+	insert into faz_receita values ('renatinho33','128');
+	insert into faz_receita values ('renatinho33','129');
+	insert into faz_receita values ('renatinho33','130');
+	insert into faz_receita values ('ruipatrocks55','131');
+	insert into faz_receita values ('ruipatrocks55','132');
+	insert into faz_receita values ('cristianor7','133');
+	insert into faz_receita values ('cristianor7','134');
+	insert into faz_receita values ('cristianor7','135');
+
+
+
+
+
+
+
+	insert into amigos1 values ('pedrocas', 'diogo66');
+	insert into amigos1 values ('pedrocas', 'rodrivice5');
+	insert into amigos1 values ('pedrocas', 'torres14v');
+	insert into amigos1 values ('diogo66', 'joao843');
+	insert into amigos1 values ('diogo66', 'cristianor7');
+	insert into amigos1 values ('diogo66', 'migascar3');
+	insert into amigos1 values ('diogo66', 'renatinho33');
+	insert into amigos1 values ('jose999', 'tonecas44');
+	insert into amigos1 values ('jose999', 'torres14v');
+	insert into amigos1 values ('jose999', 'cristianor7');
+	insert into amigos1 values('mario222', 'rodrivice5');
+	insert into amigos1 values('mario222', 'migascar3');
+	insert into amigos1 values('mario222', 'tonecas44');
+	insert into amigos1 values ('ruipatrocks55', 'felix7');
+	insert into amigos1 values ('ruipatrocks55', 'joao843');
+	insert into amigos1 values ('felix7', 'migascar3');
+	insert into amigos1 values ('felix7', 'joao843');
+	insert into amigos1 values ('felix7', 'cristianor7');
+	insert into amigos1 values ('renatinho33', 'mario222');
+	insert into amigos1 values ('renatinho33', 'pedrocas');
+	insert into amigos1 values ('tonecas44', 'diogo66');
+	insert into amigos1 values ('tonecas44', 'renatinho33');
+	insert into amigos1 values ('torres14v', 'benny55');
+	insert into amigos1 values ('torres14v', 'mario222');
+	insert into amigos1 values ('torres14v', 'ruipatrocks55');
+	insert into amigos1 values ('benny55', 'migascar3');
+	insert into amigos1 values ('benny55', 'ruipatrocks55');
+	insert into amigos1 values ('benny55', 'rodrivice5');
+	insert into amigos1 values ('benny55', 'diogo66');
+	insert into amigos1 select username2, username1 from amigos1;
+
+
+
+
+
+
+
+	insert into gostos values ('pedrocas','143','2');
+	insert into gostos values ('pedrocas','126','3');
+	insert into gostos values ('pedrocas','124','3');
+	insert into gostos values ('diogo66','123','1');
+	insert into gostos values ('diogo66','133','2');
+	insert into gostos values ('diogo66','130','3');
+	insert into gostos values ('diogo66','126','3');
+	insert into gostos values ('jose999','138','2');
+	insert into gostos values ('jose999','124','3');
+	insert into gostos values ('jose999','126','3');
+	insert into gostos values ('mario222','142','3');
+	insert into gostos values ('mario222','129','3');
+	insert into gostos values ('mario222','141','2');
+	insert into gostos values ('mario222','138','1');
+	insert into gostos values ('mario222','130','1');
+	insert into gostos values ('joao843','131','1');
+	insert into gostos values ('joao843','132','2');
+	insert into gostos values ('benny55','136','3');
+	insert into gostos values ('benny55','140','1');
+	insert into gostos values ('benny55','143','1');
+	insert into gostos values ('rodrivice5','128','2');
+	insert into gostos values ('rodrivice5','129','2');
+	insert into gostos values ('migascar3','126','2');
+	insert into gostos values ('migascar3','127','3');
+	insert into gostos values ('torres14v','131','1');
+	insert into gostos values ('torres14v','132','2');
+	insert into gostos values ('torres14v','137','2');
+	insert into gostos values ('torres14v','127','3');
+	insert into gostos values ('tonecas44','128','1');
+	insert into gostos values ('tonecas44','129','1');
+	insert into gostos values ('felix7','133','2');
+	insert into gostos values ('felix7','134','2');
+	insert into gostos values ('felix7','135','2');
+	insert into gostos values ('felix7','139','3');
+	insert into gostos values ('renatinho33','132','1');
+	insert into gostos values ('renatinho33','126','3');
+	insert into gostos values ('renatinho33','144','2');
+	insert into gostos values ('ruipatrocks55','133','1');
+	insert into gostos values ('ruipatrocks55','130','3');
+	insert into gostos values ('cristianor7','125','1');
+	insert into gostos values ('cristianor7','143','3');
+	insert into gostos values ('cristianor7','124','3');
+
+
+
+
+
+
+
+5) SQL E ÁLGEBRA RELACIONAL:
+
+
+	a) SQL:
+
+
+           select IdReceita, NomeR
+  	   from receita natural inner join lista_ingredientes
+  	   where NomeIngrediente like 'Pato'
+	
+
+
+
+           ÁLGEBRA RELACIONAL:
+
+
+
+	   πIdReceita,NomeR( σNomeIngrediente='Pato'(receita ⟗ lista_ingredientes))
+
+
+
+
+
+
+	b) SQL:
+
+
+           select IdReceita, NomeR
+   	   from receita
+
+           except
+
+   	   select IdReceita, NomeR
+    	   from receita natural inner join lista_ingredientes
+           where NomeIngrediente like 'Pato'
+
+
+
+           ÁLGEBRA RELACIONAL:
+
+
+
+           πIdReceita,NomeR(receita) ÷ πIdReceita,NomeR( σNomeIngrediente = 'Pato' (receitar ⟗ lista_ingredientes))
+
+
+
+
+
+
+	c) SQL:
+
+
+           select username
+   	   from faz_receita natural inner join membro natural inner join lista_ingredientes
+           where NomeIngrediente like 'Pato'
+
+
+
+
+
+          ÁLGEBRA RELACIONAL:
+
+
+
+          πusername( σNomeIngrediente='Pato'(faz_receita ⟗ lista_ingredientes ⟗ membro))
+
+
+
+	d) SQL:
+          
+
+             select distinct username 
+             from membro 
+             where username in (select username1 
+                                from amigos1 
+                   	        where username2 in (select username
+                                                    from faz_receita natural inner join membro natural inner join lista_ingredientes
+                                      		    where NomeIngrediente like 'Pato'));
+
+
+          ÁLGEBRA RELACIONAL:
+
+
+
+
+	   πusername((σusername)πusername1((σusername2)πusername( σNomeIngrediente='Pato'(faz_receita ⟗ membro ⟗ lista_ingredientes))(amigos1))(membro))
+
+
+
+
+
+	e) SQL:
+
+ 
+           select distinct username
+           from gostos natural inner join lista_ingredientes
+           where valor > 1 and NomeIngrediente like 'Pato'
+
+
+
+
+
+            ÁLGEBRA RELACIONAL:
+
+
+
+	    πusername( σvalor >'1' ∧ NomeIngrediente = 'Pato'(gostos ⟗ lista_ingredientes))
+
+
+
+
+
+	f) SQL:
+
+
+           select username, IdReceita
+  	   from lista_ingredientes natural inner join faz_receita
+           where NomeIngrediente like 'Ovos'
+
+           intersect
+
+  	   select username, IdReceita
+           from lista_ingredientes natural inner join faz_receita
+           where NomeIngrediente like 'Amêndoa'
+
+
+
+
+
+          ÁLGEBRA RELACIONAL:
+
+
+
+
+	    πusername,IdReceita(σNomeIngrediente = 'Ovos'(lista_ingredientes ⟗ faz_receita)) ⋂ πusername,IdReceita(σNomeIngrediente = 'Amêndoa'(lista_ingredientes ⟗ faz_receita))
+
+
+
+
+
+	g) SQL:
+
+
+           select username, IdReceita, NomeIngrediente
+           from lista_ingredientes natural inner join faz_receita
+           where NomeIngrediente like 'Pato'
+  
+           union
+
+           select username, IdReceita, NomeIngrediente
+  	   from lista_ingredientes natural inner join faz_receita
+  	   where NomeIngrediente like 'Perú'
+
+
+
+
+
+          ÁLGEBRA RELACIONAL:
+
+
+
+	   πusername,IdReceita,NomeIngrediente(σNomeIngrediente = 'Pato'(lista_ingredientes ⟗ faz_receita)) ⋃ πusername,IdReceita,NomeIngrediente(σNomeIngrediente = 'Perú'(lista_ingredientes ⟗ faz_receita))
+
+
+
+
+ 	h) SQL:
+
+
+           WITH x as (select IdReceita, count(fotografias.UrlFoto) as n_fotos
+          	      from receita natural inner join fotografias
+          	      where Tipo like 'Sobremesa' group by IdReceita)
+
+
+  	   select IdReceita, NomeR , n_fotos
+  	   from x natural inner join receita
+  	   where n_fotos=(SELECT max(n_fotos) FROM x)
+
+
+
+
+
+	  ÁLGEBRA RELACIONAL:
+
+
+
+
+	  X <-- (πIdReceita(Gcount(fotografias.UrlFoto) as n_fotos 
+          
+           σtipo = 'Sobremesa' (receita ⟗ fotografias) -> Nome)   ->(group by)
+
+
+  	   πIdReceita, NomeR, n_fotos(n_fotos = (Gmax(n_fotos)(X))(x ⟗ receita))
+
+
+
+
+	i) SQL:
+
+
+            select username
+   	    from membro as T
+    	    where not exists(select IdReceita
+                             from receita natural inner join lista_ingredientes
+                    	     where tipo like 'Entrada' and nomeingrediente like 'Cogumelos'
+                     	     except
+                   	     select IdReceita
+                    	     from gostos natural inner join membro natural inner join receita
+                    	     where T.username = gostos.username and valor = '3')
+
+
+
+
+
+	   ÁLGEBRA RELACIONAL:
+
+
+
+	     πusername(not exists ((πIdReceita(σTipo = 'Entrada' ∧ NomeIngrediente = 'Cogumelos')(receita ⟗ lista_ingredientes)) ÷ ((πIdReceita(σValor = '3' ∧ T.username = gostos.username)(gostos ⟗ membro ⟗ receita))) (membro = T)
+
+
+
+
+
+	j) SQL: ***
+
+
+
+
+
+
+
+
+	  ÁLGEBRA RELACIONAL:***
+
+
+
+
+
+
+
+
+	k) SQL:
+
+
+            select IdReceita, Custo, count(valor) as N_gostos
+  	    from receita natural inner join gostos natural inner join Lista_Ingredientes
+    	    where nomeingrediente like 'Chocolate' and TempoDeConfecao like ‘Rápido’
+            group by IdReceita, Custo
+
+
+
+
+
+    	   ÁLGEBRA RELACIONAL:
+
+
+
+
+ 	     πIdReceita, Custo, Gcount(valor) -> N_gostos(σNomeIngrediente = 'Chocolate' ∧ TempoConfeção = 'Rápido'(gostos ⟗ receita ⟗ lista_ingredientes))
+
+
+
+
+
+	l) SQL:
+
+
+           with x as (select IdReceita, count(distinct NomeR) as N_Mousse
+                      from receita
+                      where NomeR like 'Mousse de chocolate' group by IdReceita),
+            
+
+ 	   y as (select IdReceita, count(distinct username) as N_Membros
+           	 from membro natural inner join gostos 
+           	 where Valor > '1' group by IdReceita)
+           
+           
+  
+   	  select IdReceita, NomeR, N_Mousse, N_Membros
+   	  from x natural inner join y natural inner join receita
+
+
+
+
+
+
+     	    ÁLGEBRA RELACIONAL:
+
+
+
+
+	     X <-- (πIdReceita, Gcount(NomeR) as N_Mousse
+          
+            	   (σNomeR = 'Mousse de chocolate' (receita)) -> IdReceita)   ->(group by)
+
+		
+	    Y <-- (πIdReceita, Gcount(username) as N_Membros
+          
+           	  (σValor > '1' (membro ⟗ gostos)) -> IdReceita)   ->(group by)
+
+
+  	   πIdReceita, NomeR, N_Mousse, N_Membros(x ⟗ y ⟗ receita)
+
+
+
+
+
+
+
+	m) SQL: ***
+
+
+
+
+
+
+
+
+
+	   ÁLGEBRA RELACIONAL: ***
