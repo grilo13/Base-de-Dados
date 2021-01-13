@@ -1,0 +1,91 @@
+Create table livros(
+    ISBN char(9) primary key,
+    Titulo varchar(35)
+);
+
+insert into livros values ('123', 'O misterio da estrada de Sintra');
+insert into livros values ('124', 'O Crime do Padre Amaro');
+insert into livros values ('125', 'A Tragedia da Rua das Flores');
+insert into livros values ('126', 'O Primo Basilio');
+
+insert into livros values ('127', 'Memorial do Convento');
+insert into livros values ('128', 'O Ano da Morte de Ricardo Reis');
+insert into livros values ('129', 'A Jangada de Pedra');
+insert into livros values ('130', 'Historia do Cerco de Lisboa');
+insert into livros values ('131', 'O Evangelho Segundo Jesus Cristo');
+
+
+Create table autor(
+     CodigoA  char(3) primary key, 
+     NomeA varchar(25),
+     TelefoneA char(9),
+     MoradaA varchar(25),
+     CidadeA varchar(15)
+);
+
+insert into autor values ('a01','Eca de Queiros', '925543982','Rua Jordao Malhoa','Povoa de Varzim');
+insert into autor values ('a02','Jose Saramago', '934552423','Rua Pdro Guedes','Goulega');
+
+Create table autoria(
+    ISBN char(9),
+    CodigoA char(3),
+    primary key (ISBN,CodigoA),
+    foreign key (ISBN) references livros on  delete restrict,
+    foreign key (CodigoA) references autor on  delete restrict
+);
+
+insert into autoria values ('123','a01');
+insert into autoria values ('124','a01');
+insert into autoria values ('125','a01');
+insert into autoria values ('126','a01');
+
+insert into autoria values ('127','a02');
+insert into autoria values ('128','a02');
+insert into autoria values ('129','a02');
+insert into autoria values ('130','a02');
+insert into autoria values ('131','a02');
+
+Create table venda1(
+    Data char(15),
+    ISBN char(9),
+    primary key (Data)
+);
+
+insert into venda1 values ('201601140000000','a01');
+insert into venda1 values ('201601141500000','a02');
+
+Create table stock(
+    ISBN char(9),
+    NExemplares integer,
+    primary key (NExemplares),
+    foreign key (ISBN) references livros on delete restrict
+);
+
+
+Create table editora(
+    NumeroEditora char(3),
+    NomeEditora varchar(25),
+    Morada varchar(25),
+    primary key (NumeroEditora)
+);
+
+
+Create table edicao(
+    ISBN char(9),
+    NumeroEditora char(3),
+    AnoEdicao char(15),
+    Preco varchar(5),
+    primary key (ISBN),
+    foreign key (ISBN) references livros on delete restrict,
+    foreign key (NumeroEditora) references editora on delete restrict
+);
+
+/* Exercicio 1 */
+select NomeA
+from autor natural inner join autoria natural inner join livros natural inner join venda1
+where Data < '20160114000000' and Data > '20160114240000';
+
+/* Exercicio 2 */
+select NomeA
+from autor natural inner join autoria natural inner join edicao
+where AnoEdicao > '20091231999999';
